@@ -19,10 +19,10 @@ model Task {
   id         String     @id @default(uuid())
   name       String
   planned    Boolean
-  startDate  DateTime
-  endDate    DateTime
+  startDate  String
+  endDate    String
   importance Importance
-  Users      User[]
+  users      User[]
 }
 
 model Group {
