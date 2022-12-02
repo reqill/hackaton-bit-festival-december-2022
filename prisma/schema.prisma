@@ -8,9 +8,9 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String  @id
   username String  @unique
-  emain    String  @unique
+  email    String  @unique
   tasks    Task[]
   groups   Group[]
 }
