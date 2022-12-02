@@ -1,8 +1,11 @@
 import { ApolloServer } from 'apollo-server-micro';
-import { schema } from './schema';
+import { schema as baseSchema } from './schema';
 import Cors from 'micro-cors';
 import { createContext } from './context';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from './auth';
 const cors = Cors();
+const schema = applyMiddleware(baseSchema, permissions);
 const apolloServer = new ApolloServer({ context: createContext, schema });
 
 const startServer = apolloServer.start();
