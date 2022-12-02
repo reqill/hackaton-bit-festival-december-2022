@@ -1,4 +1,4 @@
-import { Center, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import Head from 'next/head';
 
 export default function Home() {
@@ -8,12 +8,10 @@ export default function Home() {
         <title>Planning tool</title>
       </Head>
       <main>
-        <Center height="100vh" maxH="100vh" width="100vw" maxW="100vw" backgroundColor="gray.100">
-          <Heading fontSize="8xl" fontWeight="semibold">
-            Landing Page
-            <a href="/api/auth/login">Logout</a>
-          </Heading>
-        </Center>
+        <Heading fontSize="8xl" fontWeight="semibold">
+          Landing Page
+          <a href="/api/auth/login">Logout</a>
+        </Heading>
       </main>
     </div>
   );
