@@ -1,4 +1,4 @@
-import { enumType, extendType, objectType } from 'nexus';
+import { enumType, objectType } from 'nexus';
 import { User } from './user';
 const Importance = enumType({
   name: 'Importance',
