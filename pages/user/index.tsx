@@ -10,7 +10,7 @@ export default function Home() {
       <main>
         <Center height="100vh" maxH="100vh" width="100vw" maxW="100vw" backgroundColor="gray.100">
           <Heading fontSize="8xl" fontWeight="semibold">
-            Landing Page
+            User page
           </Heading>
         </Center>
       </main>
