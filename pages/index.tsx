@@ -10,6 +10,7 @@ export default function Home() {
       <main>
         <Heading fontSize="8xl" fontWeight="semibold">
           Landing Page
+          <a href="/api/auth/login">Logout</a>
         </Heading>
       </main>
     </div>
