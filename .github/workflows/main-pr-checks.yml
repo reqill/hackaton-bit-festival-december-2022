@@ -1,0 +1,32 @@
+name: Check PR to main
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - 'hotfix/**'
+      - 'release/**'
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  checkTypes:
+    name: Check if project is correct
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check pull request title
+        uses: Slashgear/action-check-pr-title@v3.0.0
+        with:
+          regexp: '(hotfix(\(([a-zA-z0-9\-])+\))?: .{1,80})|(chore\(release\)): v\d+\.\d+\.\d+.*'
+
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check types and tests
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm run check
+      - run: npm run test
+      - run: npm run build

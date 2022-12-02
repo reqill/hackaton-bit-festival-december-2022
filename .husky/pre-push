@@ -1,0 +1,14 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo Installing Dependencies...
+npm install
+
+echo Linting...
+npm run lint
+
+echo Type Checking Application...
+npm run check-types
+
+echo Testing Application...
+npm run test
