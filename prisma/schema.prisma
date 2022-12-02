@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(uuid())
+  username String  @unique
+  emain    String  @unique
+  tasks    Task[]
+  groups   Group[]
+}
+
+model Task {
+  id         String     @id @default(uuid())
+  name       String
+  planned    Boolean
+  startDate  DateTime
+  endDate    DateTime
+  importance Importance
+  Users      User[]
+}
+
+model Group {
+  id    String @id @default(uuid())
+  name  String
+  users User[]
+}
+
+enum Importance {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
