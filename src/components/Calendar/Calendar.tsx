@@ -3,6 +3,9 @@ import { CalendarView, OnEventDragFinish } from 'kalend';
 import 'kalend/dist/styles/index.css';
 import dynamic from 'next/dynamic';
 import { CalendarForm } from '../CalendarForm';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { Circle, Icon } from '@chakra-ui/react';
+import { DEFAULT_TRANSITION } from 'src/constants';
 
 const Kalend = dynamic(() => import('kalend'), { ssr: false });
 
@@ -13,33 +16,22 @@ export const Calendar = (props: any) => {
 
   useEffect(() => {
     if (props.events) {
-      console.log('Events');
-      console.log(props.events);
-      setEvents(props.events);
+      setEvents(JSON.parse(JSON.stringify(props.events)));
     }
-  }, [props]);
+  }, [props.events]);
+
   const onNewEventClick = (data: any) => {
-    // const msg = `New event click action\n\n Callback data:\n\n${JSON.stringify({
-    //   hour: data.hour,
-    //   day: data.day,
-    //   startAt: data.startAt,
-    //   endAt: data.endAt,
-    //   view: data.view,
-    //   event: 'click event ',
-    // })}`;
     setSelectedEvent(data);
     setIsFormOpen(true);
   };
 
   const onEventClick = (data: any) => {
-    // const msg = `Click on event action\n\n Callback data:\n\n${JSON.stringify(data)}`;
     setSelectedEvent(data);
     setIsFormOpen(true);
   };
 
   const onEventDragFinish: OnEventDragFinish = (prev: any, current: any, data: any) => {
     setEvents(data);
-    // just call api i guess
   };
 
   return (
@@ -69,7 +61,31 @@ export const Calendar = (props: any) => {
           },
         }}
       />
-      <CalendarForm open={isFormOpen} onClose={() => setIsFormOpen(false)} event={selectedEvent} />
+      <Circle
+        position="absolute"
+        zIndex={99}
+        bottom={6}
+        right={6}
+        backgroundColor="teal.300"
+        size={12}
+        shadow="base"
+        transition={DEFAULT_TRANSITION}
+        _hover={{ shadow: 'xl' }}
+        cursor="pointer"
+        onClick={() => setIsFormOpen(true)}
+      >
+        <Icon fontSize="2xl" color="white">
+          <PlusIcon />
+        </Icon>
+      </Circle>
+      <CalendarForm
+        open={isFormOpen}
+        onClose={() => {
+          setSelectedEvent(null);
+          setIsFormOpen(false);
+        }}
+        event={selectedEvent}
+      />
     </>
   );
 };

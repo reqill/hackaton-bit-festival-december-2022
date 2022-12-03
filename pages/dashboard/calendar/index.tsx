@@ -35,22 +35,22 @@ const GET_TASKS = gql`
 `;
 
 export default function CalendarPage() {
-  //data.me.tasks taski indywidualne
-  //data.me.groups grupy w ktorych jest user group.task - taski danej grupy
   const { data, loading, error } = useQuery(GET_TASKS); //task.planned - na godziny
-
   const [events, setEvents] = useState([]);
+
   useEffect(() => {
     if (!loading) {
       const tasks = data.me.tasks?.filter((t: Task) => t.planned);
       data.me.groups.forEach((g: any) => {
         tasks.push(...g.tasks?.filter((t: Task) => t.planned));
       });
+
       setEvents(
         tasks.map((t: Task) => {
           if (t.startDate && t.endDate) {
             const startDateObj: Date = new Date(t.startDate);
             const endDateObj: Date = new Date(t.endDate);
+
             return {
               id: t.id,
               startAt: startDateObj,
@@ -70,9 +70,11 @@ export default function CalendarPage() {
       );
     }
   }, [data]);
+
   useEffect(() => {
     console.log(events);
   }, [events]);
+
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Head>

@@ -3,31 +3,16 @@ import Scrollbars from 'react-custom-scrollbars-2';
 import { TodoItem } from './TodoItem';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { TodoItemAdd } from './TodoItemAdd';
+import { Task } from '@prisma/client';
 
-const test = [
-  { title: 'Lorem Ipsum' },
-  { title: 'Something' },
-  { title: 'LOL' },
-  { title: 'VERY LONG MY GOD' },
-  { title: 'title5' },
-  { title: 'title6' },
-  { title: 'title7' },
-  { title: 'title8' },
-  { title: 'How the kek is that even longer twf' },
-  { title: 'title10' },
-  { title: 'title11' },
-  { title: 'title12' },
-  { title: 'title13' },
-  { title: 'title14' },
-  { title: 'title15' },
-];
+export type FrontTaskType = Task & { groupName?: string; taskType?: string };
 
 export const TodoList = ({
   data,
   title,
   createNew,
 }: {
-  data: any;
+  data?: FrontTaskType[];
   title: string;
   createNew: () => void;
 }) => {
@@ -73,8 +58,8 @@ export const TodoList = ({
             }
           </HStack>
 
-          {data?.map((task: any) => (
-            <TodoItem key={`todo-item-${task.id}`} title={task.name} />
+          {data?.map((task: FrontTaskType) => (
+            <TodoItem key={`todo-item-${task.id}`} {...task} />
           ))}
           <TodoItemAdd addNew={createNew} />
         </VStack>

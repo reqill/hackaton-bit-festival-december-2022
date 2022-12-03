@@ -53,13 +53,15 @@ export default function Planner() {
   const { data, loading, error, refetch } = useQuery(GET_TASKS); //task.planned - na godziny
   const [tasksPersonal, setTasksPersonal] = useState([]);
   const [tasksGroup, setTasksGroup] = useState([]);
+
   useEffect(() => {
     if (!loading) {
       const personalTasks = data.me.tasks?.filter((t: Task) => !t.planned);
       setTasksPersonal(personalTasks);
       const groupTasks: any = [];
       data.me.groups.forEach((g: any) => {
-        groupTasks.push(...g.tasks?.filter((t: Task) => !t.planned));
+        const groupTasksWithName = g.map((t: Task) => !t.planned && { ...t, groupName: g.name });
+        groupTasks.push(...groupTasksWithName);
       });
       setTasksGroup(groupTasks);
     }
@@ -119,7 +121,12 @@ export default function Planner() {
           </VStack>
         </main>
       </div>
-      <TodoForm refetch={refetch} open={isDialogOpen} onClose={() => setIsDialogOpen.off()} />
+      <TodoForm
+        refetch={refetch}
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen.off()}
+        groups={data?.me.groups}
+      />
     </>
   );
 }

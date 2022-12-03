@@ -1,20 +1,21 @@
-import { Task } from '@prisma/client';
 import { useFormik, Field, FormikProvider } from 'formik';
 import { object, string } from 'yup';
 import { Dialog } from '../Dialog';
 import { Importance } from '@prisma/client';
 import { mixed } from 'yup';
-import { Checkbox, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { Checkbox, FormControl, FormLabel, Input, useToast, VStack } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { onFieldChange } from 'src/utils/forms';
 import { gql } from 'apollo-server-micro';
 import { useMutation } from '@apollo/client';
+import { FrontTaskType } from '../TodoList';
 
 type TodoFormProps = {
   refetch: () => void;
   onClose: () => void;
   open: boolean;
-  defaultValues?: Task;
+  defaultValues?: FrontTaskType;
+  groups?: { id: string; name: string }[];
 };
 const SEND_TASK = gql`
   mutation Mutation(
@@ -40,9 +41,16 @@ const SEND_TASK = gql`
     }
   }
 `;
-export const TodoForm = ({ onClose, open, defaultValues, refetch }: TodoFormProps) => {
-  const [taskMutation] = useMutation(SEND_TASK); // taskMutation({variables:{name:name,importance:{importance:ENUM}}})
+const taskType = {
+  SCHOOL: 'SCHOOL',
+  WORK: 'WORK',
+  FRIENDS: 'FRIENDS',
+  FAMILY: 'FAMILY',
+};
 
+export const TodoForm = ({ onClose, open, defaultValues, refetch, groups }: TodoFormProps) => {
+  const [taskMutation] = useMutation(SEND_TASK); // taskMutation({variables:{name:name,importance:{importance:ENUM}}})
+  const toast = useToast();
   const formik = useFormik({
     initialValues: {
       name: defaultValues?.name || '',
@@ -50,6 +58,8 @@ export const TodoForm = ({ onClose, open, defaultValues, refetch }: TodoFormProp
       startDate: defaultValues?.startDate || null,
       endDate: defaultValues?.endDate || null,
       importance: defaultValues?.importance,
+      group: defaultValues?.groupName || null,
+      taskType: defaultValues?.taskType || null,
     },
 
     validationSchema: object().shape({
@@ -61,12 +71,26 @@ export const TodoForm = ({ onClose, open, defaultValues, refetch }: TodoFormProp
     }),
 
     onSubmit: async (values) => {
-      await taskMutation({
-        variables: { ...values, importance: { importance: values.importance } },
-      });
-      refetch();
-      formik.resetForm();
-      onClose();
+      try {
+        await taskMutation({
+          variables: {
+            ...values,
+            importance: { importance: values.importance },
+            taskType: { taskType: values.taskType },
+          },
+        });
+        refetch();
+        formik.resetForm();
+        onClose();
+      } catch (e: any) {
+        toast({
+          position: 'bottom-left',
+          description: e.message,
+          status: 'error',
+          duration: 2500,
+          isClosable: false,
+        });
+      }
     },
   });
 
@@ -125,6 +149,38 @@ export const TodoForm = ({ onClose, open, defaultValues, refetch }: TodoFormProp
               onChange={({ value }: any) => formik.setFieldValue('importance', value)}
               id="priority"
               name="priority"
+              variant="filled"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel mb=".1rem" htmlFor="taskType">
+              Task type
+            </FormLabel>
+            <Field
+              as={Select}
+              options={[
+                { value: taskType.FAMILY, label: 'Family' },
+                { value: taskType.FRIENDS, label: 'Friends' },
+                { value: taskType.SCHOOL, label: 'School' },
+                { value: taskType.WORK, label: 'Work' },
+              ]}
+              onChange={({ value }: any) => formik.setFieldValue('taskType', taskType)}
+              id="priority"
+              name="priority"
+              variant="filled"
+            />
+          </FormControl>
+          <FormControl isDisabled={!groups}>
+            <FormLabel mb=".1rem" htmlFor="groupId">
+              Group
+            </FormLabel>
+            <Field
+              as={Select}
+              value={formik.values.group}
+              options={[...groups!.map((group) => ({ value: group.id, label: group.name }))]}
+              onChange={({ value }: any) => formik.setFieldValue('groupName', value)}
+              id="group"
+              name="groupId"
               variant="filled"
             />
           </FormControl>

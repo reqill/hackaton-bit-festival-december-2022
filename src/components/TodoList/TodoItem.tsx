@@ -1,12 +1,50 @@
 import { Badge, Box, HStack, Icon, Text, useBoolean, VStack } from '@chakra-ui/react';
-import { ChevronDoubleUpIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronDoubleUpIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+  MinusSmallIcon,
+} from '@heroicons/react/24/outline';
+import { Importance } from '@prisma/client';
 import { Dialog } from '../Dialog';
+import { FrontTaskType } from './TodoList';
 
-type TodoItemProps = {
-  title: string;
+const getPriorityBadgeWithColor = (importance: Importance) => {
+  switch (importance) {
+    case Importance.LOW:
+      return (
+        <Icon color="blue">
+          <ChevronDownIcon strokeWidth={2} />
+        </Icon>
+      );
+    case Importance.MEDIUM:
+      return (
+        <Icon color="yellow">
+          <MinusSmallIcon strokeWidth={2} />
+        </Icon>
+      );
+    case Importance.HIGH:
+      return (
+        <Icon color="orangered">
+          <ChevronUpIcon strokeWidth={2} />
+        </Icon>
+      );
+    case Importance.CRITICAL:
+      return (
+        <Icon color="red">
+          <ChevronDoubleUpIcon strokeWidth={2} />
+        </Icon>
+      );
+    default:
+      return (
+        <Icon color="yellow">
+          <ChevronDoubleUpIcon strokeWidth={2} />
+        </Icon>
+      );
+  }
 };
 
-export const TodoItem = ({ title }: TodoItemProps) => {
+export const TodoItem = ({ importance, name, groupName, taskType }: FrontTaskType) => {
   const [isCollapsed, setIsCollapsed] = useBoolean(false);
 
   return (
@@ -20,22 +58,27 @@ export const TodoItem = ({ title }: TodoItemProps) => {
       >
         <VStack width="100%" alignItems="left" pt={2} px={3} spacing={0}>
           <Text fontWeight="medium" fontSize={16} noOfLines={1}>
-            {title}
+            {name}
           </Text>
           <HStack pt=".35rem" justifyContent="space-between">
             <HStack>
-              <Badge backgroundColor="red.100">label1</Badge>
-              <Badge backgroundColor="yellow.100">lorem</Badge>
-              <Badge backgroundColor="green.100">UI</Badge>
+              {groupName && <Badge>{groupName}</Badge>}
+              {taskType && <Badge>{taskType}</Badge>}
             </HStack>
-            <Icon color="orangered">
-              <ChevronDoubleUpIcon strokeWidth={2} />
-            </Icon>
+            {getPriorityBadgeWithColor(importance)}
           </HStack>
         </VStack>
       </Box>
-      <Dialog onClose={() => setIsCollapsed.off()} open={isCollapsed} title={title}>
-        <>some info about this item</>
+      <Dialog onClose={() => setIsCollapsed.off()} open={isCollapsed} title={name}>
+        <Text>
+          Priority: <b>{importance}</b>
+        </Text>
+        <Text>
+          Group: <b>{groupName || 'N/A'}</b>
+        </Text>
+        <Text>
+          Category: <b>{importance || 'N/A'}</b>
+        </Text>
       </Dialog>
     </>
   );

@@ -22,7 +22,11 @@ a {
 .Kalend__CalendarHeaderDates__text,
 .Kalend__CalendarBodyHours__text,
 .Kalend__CalendarHeaderWeekDays__text,
-.Kalend__main {
+.Kalend__main,
+.Kalend__text,
+.Kalend__Event__summary,
+.Kalend__Event__summary__type-normal,
+.Kalend__text-light {
   font-family: 'Karla', sans-serif !important;
 }
 
@@ -51,4 +55,3 @@ a {
   border-radius: 7px !important;
   padding: 6px 12px !important;
 }
-
