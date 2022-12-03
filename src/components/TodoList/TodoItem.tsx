@@ -77,7 +77,7 @@ export const TodoItem = ({ importance, name, groupName, taskType }: FrontTaskTyp
           Group: <b>{groupName || 'N/A'}</b>
         </Text>
         <Text>
-          Category: <b>{importance || 'N/A'}</b>
+          Category: <b>{taskType || 'N/A'}</b>
         </Text>
       </Dialog>
     </>

@@ -37,15 +37,6 @@ const GET_TASKS = gql`
   }
 `;
 
-const SEND_TASK = gql`
-  mutation Mutation($name: String!, $importance: importanceInput!) {
-    addTask(name: $name, importance: $importance) {
-      id
-      importance
-      name
-    }
-  }
-`;
 export default function Planner() {
   const [isDialogOpen, setIsDialogOpen] = useBoolean(false);
   //data.me.tasks taski indywidualne
@@ -59,10 +50,13 @@ export default function Planner() {
       const personalTasks = data.me.tasks?.filter((t: Task) => !t.planned);
       setTasksPersonal(personalTasks);
       const groupTasks: any = [];
-      data.me.groups.forEach((g: any) => {
-        const groupTasksWithName = g.map((t: Task) => !t.planned && { ...t, groupName: g.name });
-        groupTasks.push(...groupTasksWithName);
-      });
+      if (data.me.groups) {
+        data.me.groups.forEach((g: any) => {
+          const groupTasksWithName = g.tasks.map((t: Task) => ({ ...t, groupName: g.name }));
+          const filteredTaskWithName = groupTasksWithName.filter((t: Task) => !t.planned);
+          groupTasks.push(...filteredTaskWithName);
+        });
+      }
       setTasksGroup(groupTasks);
     }
   }, [data]);
