@@ -18,7 +18,7 @@ enum Importance {
 }
 
 type Mutation {
-  addEvent(endDate: String!, importance: importanceInput!, name: String!, startDate: String!, type: typeInput!): Task!
+  addEvent(endDate: String!, importance: importanceInput!, name: String!, startDate: String!, taskType: typeInput!): Task!
   addGroupEvent(endDate: String!, groupId: String!, importance: importanceInput!, name: String!, startDate: String!, taskType: typeInput!): Task!
   addGroupTask(groupId: String!, importance: importanceInput!, name: String!, suspectedDuration: Int, taskType: typeInput!): Task!
   addTask(importance: importanceInput!, name: String!, suspectedDuration: Int, taskType: typeInput!): Task!

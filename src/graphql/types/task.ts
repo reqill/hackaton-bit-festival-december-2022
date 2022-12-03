@@ -75,7 +75,7 @@ export const EventMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         importance: nonNull(ImportanceInput),
-        type: nonNull(TypeInput),
+        taskType: nonNull(TypeInput),
         startDate: nonNull(stringArg()),
         endDate: nonNull(stringArg()),
       },
@@ -141,7 +141,7 @@ export const GroupEventMutation = extendType({
             name: args.name,
             planned: true,
             importance: args.importance.importance,
-            tytaskTypepe: args.taskType.taskType,
+            taskType: args.taskType.taskType,
             startDate: args.startDate,
             endDate: args.endDate,
             group: { connect: { id: args.groupId } },
