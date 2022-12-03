@@ -21,27 +21,27 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
       <ApolloProvider client={apolloClient}>
-       <ChakraProvider theme={theme}>
-        <Box overflow="hidden" maxW="100vw" w="100vw" backgroundColor="gray.50" minH="100vh">
-          {isDashboard ? (
-            <HStack w="100%">
-              <Show above="md">
-                <DashboardNavigation />
-              </Show>
-              <Show below="md">
-                <MobileDashboardNavigation />
-              </Show>
-              <Component {...pageProps} />
-            </HStack>
-          ) : (
-            <VStack w="100%">
-              <MainNavigation />
-              <Component {...pageProps} />
-              <Footer />
-            </VStack>
-          )}
-        </Box>
-      </ChakraProvider>
+        <ChakraProvider theme={theme}>
+          <Box overflow="hidden" maxW="100vw" w="100vw" backgroundColor="gray.50" minH="100vh">
+            {isDashboard ? (
+              <HStack w="100%">
+                <Show above="md">
+                  <DashboardNavigation />
+                </Show>
+                <Show below="md">
+                  <MobileDashboardNavigation />
+                </Show>
+                <Component {...pageProps} />
+              </HStack>
+            ) : (
+              <VStack w="100%">
+                <MainNavigation />
+                <Component {...pageProps} />
+                <Footer />
+              </VStack>
+            )}
+          </Box>
+        </ChakraProvider>
       </ApolloProvider>
     </UserProvider>
   );

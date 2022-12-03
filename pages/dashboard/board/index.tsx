@@ -1,6 +1,5 @@
 import { Circle, Heading, Icon, SimpleGrid, Text, useBoolean, VStack } from '@chakra-ui/react';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { Center, Heading } from '@chakra-ui/react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import Head from 'next/head';
 import { TodoForm } from 'src/components/TodoForm';
