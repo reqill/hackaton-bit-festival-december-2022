@@ -1,10 +1,8 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { Center } from '@chakra-ui/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { CreateateGroupMutation } from 'src/graphql/types';
 
 export default function Home() {
   const SEND_TASK = gql`

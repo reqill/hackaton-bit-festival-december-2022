@@ -1,12 +1,4 @@
-import {
-  enumType,
-  extendType,
-  inputObjectType,
-  nonNull,
-  nullable,
-  objectType,
-  stringArg,
-} from 'nexus';
+import { enumType, extendType, inputObjectType, nonNull, objectType, stringArg } from 'nexus';
 import { Group } from './group';
 import { User } from './user';
 const Importance = enumType({

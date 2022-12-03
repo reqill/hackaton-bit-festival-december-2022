@@ -1,4 +1,4 @@
-import { arg, extendType, nonNull, objectType, stringArg } from 'nexus';
+import { extendType, nonNull, objectType, stringArg } from 'nexus';
 import { Task } from './task';
 import { User } from './user';
 
