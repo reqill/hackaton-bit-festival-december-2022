@@ -1,4 +1,4 @@
-import { objectType } from 'nexus';
+import { extendType, objectType } from 'nexus';
 import { Group } from './group';
 import { Task } from './task';
 
@@ -30,6 +30,32 @@ export const User = objectType({
             },
           })
           .groups();
+      },
+    });
+    t.list.field('adminOf', {
+      type: Group,
+      async resolve(_parent, _args, ctx) {
+        return await ctx.prisma.user
+          .findUnique({
+            where: {
+              id: _parent.id as string | undefined,
+            },
+          })
+          .adminOf();
+      },
+    });
+  },
+});
+
+export const MeQuery = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('me', {
+      type: 'User',
+      resolve(_parent, _args, ctx) {
+        return ctx.prisma.user.findUnique({
+          where: { id: ctx.user?.id },
+        });
       },
     });
   },
