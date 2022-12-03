@@ -18,6 +18,7 @@
     "test": "jest --config ./jest.config.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
     "@auth0/nextjs-auth0": "^2.0.0",
     "@chakra-ui/react": "^2.4.2",
     "@emotion/react": "^11.10.5",
