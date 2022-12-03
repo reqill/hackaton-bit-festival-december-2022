@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <UserProvider>
       <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
-          <Box overflowX="hidden" maxW="100vw" w="100vw" backgroundColor="gray.50" minH="100vh">
+          <Box overflow="hidden" maxW="100vw" w="100vw" backgroundColor="gray.50" minH="100vh">
             {isDashboard ? (
               <HStack w="100%">
                 <Show above="md">
