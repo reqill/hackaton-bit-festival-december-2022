@@ -1,10 +1,12 @@
 import { Circle, Heading, Icon, SimpleGrid, Text, useBoolean, VStack } from '@chakra-ui/react';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import Head from 'next/head';
 import { TodoForm } from 'src/components/TodoForm';
 import { TodoList } from 'src/components/TodoList';
 import { DEFAULT_TRANSITION } from 'src/constants';
+import { useEffect, useState } from 'react';
+import { Task } from '@prisma/client';
 
 const GET_TASKS = gql`
   query Query {
@@ -13,6 +15,7 @@ const GET_TASKS = gql`
         endDate
         id
         importance
+        taskType
         name
         planned
         startDate
@@ -24,6 +27,7 @@ const GET_TASKS = gql`
           endDate
           id
           importance
+          taskType
           name
           planned
           startDate
@@ -42,12 +46,24 @@ const SEND_TASK = gql`
     }
   }
 `;
-export default function Board() {
+export default function Planner() {
   const [isDialogOpen, setIsDialogOpen] = useBoolean(false);
   //data.me.tasks taski indywidualne
   //data.me.groups grupy w ktorych jest user group.task - taski danej grupy
-  const { data, loading, error } = useQuery(GET_TASKS); //task.planned - na godziny
-  const [taskMutation] = useMutation(SEND_TASK); // taskMutation({variables:{name:name,importance:{importance:ENUM}}})
+  const { data, loading, error, refetch } = useQuery(GET_TASKS); //task.planned - na godziny
+  const [tasksPersonal, setTasksPersonal] = useState([]);
+  const [tasksGroup, setTasksGroup] = useState([]);
+  useEffect(() => {
+    if (!loading) {
+      const personalTasks = data.me.tasks?.filter((t: Task) => !t.planned);
+      setTasksPersonal(personalTasks);
+      const groupTasks: any = [];
+      data.me.groups.forEach((g: any) => {
+        groupTasks.push(...g.tasks?.filter((t: Task) => !t.planned));
+      });
+      setTasksGroup(groupTasks);
+    }
+  }, [data]);
 
   return (
     <>
@@ -72,9 +88,17 @@ export default function Board() {
               Your todo list for even the hardest of tasks.
             </Text>
             <SimpleGrid pt={4} columns={[1, 1, 2, 2, 3]} gap={3}>
-              <TodoList title="Personal" createNew={() => setIsDialogOpen.on()} />
-              <TodoList title="Group shared" createNew={() => setIsDialogOpen.on()} />
-              <TodoList title="Other" createNew={() => setIsDialogOpen.on()} />
+              <TodoList
+                data={tasksPersonal}
+                title="Personal"
+                createNew={() => setIsDialogOpen.on()}
+              />
+              <TodoList
+                data={tasksGroup}
+                title="Group shared"
+                createNew={() => setIsDialogOpen.on()}
+              />
+              <TodoList data={undefined} title="Other" createNew={() => setIsDialogOpen.on()} />
             </SimpleGrid>
             <Circle
               position="absolute"
@@ -95,7 +119,7 @@ export default function Board() {
           </VStack>
         </main>
       </div>
-      <TodoForm open={isDialogOpen} onClose={() => setIsDialogOpen.off()} />
+      <TodoForm refetch={refetch} open={isDialogOpen} onClose={() => setIsDialogOpen.off()} />
     </>
   );
 }

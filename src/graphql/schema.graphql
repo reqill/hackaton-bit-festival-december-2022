@@ -18,11 +18,10 @@ enum Importance {
 }
 
 type Mutation {
-  addEvent(endDate: String!, importance: importanceInput!, name: String!, startDate: String!): Task!
-  addGroupEvent(endDate: String!, groupId: String!, importance: importanceInput!, name: String!, startDate: String!): Task!
-  addGroupTask(groupId: String!, importance: importanceInput!, name: String!, suspectedDuration: Int): Task!
-  addTask(importance: importanceInput!, name: String!, suspectedDuration: Int): Task!
-
+  addEvent(endDate: String!, importance: importanceInput!, name: String!, startDate: String!, type: typeInput!): Task!
+  addGroupEvent(endDate: String!, groupId: String!, importance: importanceInput!, name: String!, startDate: String!, taskType: typeInput!): Task!
+  addGroupTask(groupId: String!, importance: importanceInput!, name: String!, suspectedDuration: Int, taskType: typeInput!): Task!
+  addTask(importance: importanceInput!, name: String!, suspectedDuration: Int, taskType: typeInput!): Task!
   addToGroup(email: String!, groupId: String!): Group!
   createGroup(name: String!): Group!
   findFit(calculationInterval: Int, endDate: String!, maxEndTime: Int, minStartTime: Int, startDate: String!, taskId: String!): Task!
@@ -42,7 +41,15 @@ type Task {
   planned: Boolean
   startDate: String
   suspectedDuration: Int
+  taskType: Type
   users: [User]
+}
+
+enum Type {
+  FAMILY
+  FRIENDS
+  SCHOOL
+  WORK
 }
 
 type User {
@@ -56,4 +63,8 @@ type User {
 
 input importanceInput {
   importance: Importance!
+}
+
+input typeInput {
+  taskType: Type!
 }

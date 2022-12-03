@@ -6,12 +6,26 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 
 export default function Home() {
   const SEND_TASK = gql`
-    mutation Mutation($name: String!, $importance: importanceInput!, $suspectedDuration: Int) {
-      addTask(name: $name, importance: $importance, suspectedDuration: $suspectedDuration) {
+    mutation Mutation(
+      $name: String!
+      $importance: importanceInput!
+      $taskType: typeInput!
+      $suspectedDuration: Int
+    ) {
+      addTask(
+        name: $name
+        importance: $importance
+        taskType: $taskType
+        suspectedDuration: $suspectedDuration
+      ) {
+        endDate
         id
         importance
         name
+        planned
+        startDate
         suspectedDuration
+        taskType
       }
     }
   `;
@@ -19,26 +33,44 @@ export default function Home() {
     mutation Mutation(
       $name: String!
       $importance: importanceInput!
+      $taskType: typeInput!
       $startDate: String!
       $endDate: String!
     ) {
-      addEvent(name: $name, importance: $importance, startDate: $startDate, endDate: $endDate) {
-        id
+      addEvent(
+        name: $name
+        importance: $importance
+        taskType: $taskType
+        startDate: $startDate
+        endDate: $endDate
+      ) {
         endDate
+        id
         importance
         name
         planned
         startDate
+        suspectedDuration
+        taskType
       }
     }
   `;
   const SEND_GROUP_TASK = gql`
-    mutation AddGroupTask($name: String!, $importance: importanceInput!, $groupId: String!) {
-      addGroupTask(name: $name, importance: $importance, groupId: $groupId) {
+    mutation Mutation(
+      $name: String!
+      $importance: importanceInput!
+      $taskType: typeInput!
+      $groupId: String!
+    ) {
+      addGroupTask(name: $name, importance: $importance, taskType: $taskType, groupId: $groupId) {
+        endDate
         id
         importance
         name
         planned
+        startDate
+        suspectedDuration
+        taskType
       }
     }
   `;
@@ -46,6 +78,7 @@ export default function Home() {
     mutation Mutation(
       $name: String!
       $importance: importanceInput!
+      $taskType: typeInput!
       $startDate: String!
       $endDate: String!
       $groupId: String!
@@ -53,6 +86,7 @@ export default function Home() {
       addGroupEvent(
         name: $name
         importance: $importance
+        taskType: $taskType
         startDate: $startDate
         endDate: $endDate
         groupId: $groupId
@@ -63,6 +97,8 @@ export default function Home() {
         name
         planned
         startDate
+        suspectedDuration
+        taskType
       }
     }
   `;
@@ -89,6 +125,7 @@ export default function Home() {
           endDate
           id
           importance
+          taskType
           name
           planned
           startDate
@@ -100,6 +137,7 @@ export default function Home() {
             endDate
             id
             importance
+            taskType
             name
             planned
             startDate
@@ -207,11 +245,22 @@ export default function Home() {
   const sendData = () => {
     if (planned) {
       eventMut({
-        variables: { name, startDate, endDate, importance: { importance: 'HIGH' } },
+        variables: {
+          name,
+          startDate,
+          endDate,
+          importance: { importance: 'HIGH' },
+          taskType: { taskType: 'SCHOOL' },
+        },
       });
     } else {
       taskMut({
-        variables: { name, importance: { importance: 'HIGH' }, suspectedDuration },
+        variables: {
+          name,
+          importance: { importance: 'HIGH' },
+          taskType: { taskType: 'SCHOOL' },
+          suspectedDuration,
+        },
       });
     }
   };
@@ -223,12 +272,18 @@ export default function Home() {
           startDate,
           endDate,
           importance: { importance: 'HIGH' },
+          taskType: { taskType: 'SCHOOL' },
           groupId: selectedGroup,
         },
       });
     } else {
       taskGroupMut({
-        variables: { name, importance: { importance: 'HIGH' }, groupId: selectedGroup },
+        variables: {
+          name,
+          importance: { importance: 'HIGH' },
+          taskType: { taskType: 'SCHOOL' },
+          groupId: selectedGroup,
+        },
       });
     }
   };
@@ -299,7 +354,7 @@ export default function Home() {
           return (
             <div key={t.id}>
               Name: {t.name} StartDate: {t.startDate} EndDate: {t.endDate} Planned: {t.planned}
-              Importance: {t.importance}
+              Importance: {t.importance} Type: {t.taskType}
             </div>
           );
         })}
@@ -308,7 +363,7 @@ export default function Home() {
             return (
               <div key={t.id}>
                 Name: {t.name} StartDate: {t.startDate} EndDate: {t.endDate} Planned: {t.planned}
-                Importance: {t.importance}
+                Importance: {t.importance} Type: {t.taskType}
               </div>
             );
           });

@@ -7,14 +7,42 @@ import { mixed } from 'yup';
 import { Checkbox, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { onFieldChange } from 'src/utils/forms';
+import { gql } from 'apollo-server-micro';
+import { useMutation } from '@apollo/client';
 
 type TodoFormProps = {
+  refetch: () => void;
   onClose: () => void;
   open: boolean;
   defaultValues?: Task;
 };
+const SEND_TASK = gql`
+  mutation Mutation(
+    $name: String!
+    $importance: importanceInput!
+    $taskType: typeInput!
+    $suspectedDuration: Int
+  ) {
+    addTask(
+      name: $name
+      importance: $importance
+      taskType: $taskType
+      suspectedDuration: $suspectedDuration
+    ) {
+      endDate
+      id
+      importance
+      name
+      planned
+      startDate
+      suspectedDuration
+      taskType
+    }
+  }
+`;
+export const TodoForm = ({ onClose, open, defaultValues, refetch }: TodoFormProps) => {
+  const [taskMutation] = useMutation(SEND_TASK); // taskMutation({variables:{name:name,importance:{importance:ENUM}}})
 
-export const TodoForm = ({ onClose, open, defaultValues }: TodoFormProps) => {
   const formik = useFormik({
     initialValues: {
       name: defaultValues?.name || '',
@@ -33,7 +61,10 @@ export const TodoForm = ({ onClose, open, defaultValues }: TodoFormProps) => {
     }),
 
     onSubmit: async (values) => {
-      // await api calls
+      await taskMutation({
+        variables: { ...values, importance: { importance: values.importance } },
+      });
+      refetch();
       formik.resetForm();
       onClose();
     },
