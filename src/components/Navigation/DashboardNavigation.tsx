@@ -46,7 +46,7 @@ export const DashboardNavigation = () => {
             <Link href={'/'}>
               <Heading
                 fontWeight="semibold"
-                color="whiteAlpha.800"
+                color="whiteAlpha.900"
                 mt={5}
                 px={3}
                 mb={3}
