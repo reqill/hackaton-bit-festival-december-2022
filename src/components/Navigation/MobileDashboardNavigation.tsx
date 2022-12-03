@@ -1,5 +1,11 @@
 import { Box, Circle, Divider, Heading, Icon, LinkBox, useBoolean, VStack } from '@chakra-ui/react';
-import { DASHBOARD_ROUTES, DEFAULT_TRANSITION, PROFILE_ROUTE, SETTINGS_ROUTE } from 'src/constants';
+import {
+  DASHBOARD_ROUTE,
+  DASHBOARD_ROUTES,
+  DEFAULT_TRANSITION,
+  PROFILE_ROUTE,
+  SETTINGS_ROUTE,
+} from 'src/constants';
 import { DashboardLinkItem } from './DashbordLinkItem';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -8,7 +14,6 @@ export const MobileDashboardNavigation = () => {
   const [collapsed, setCollapsed] = useBoolean(false);
 
   const WIDTH = false ? 75 : 240;
-  //?
   return (
     <Box
       height="100vh"
@@ -62,6 +67,8 @@ export const MobileDashboardNavigation = () => {
           <Divider width={false ? '65%' : '90%'} pr={4} opacity={0.2} />
           <Divider width="90%" pr={4} opacity={0} />
           <Divider width="90%" pr={4} opacity={0} />
+          <DashboardLinkItem {...DASHBOARD_ROUTE} isCollapsed={false} />
+
           {DASHBOARD_ROUTES.map((route, i) => (
             <DashboardLinkItem {...route} isCollapsed={false} key={`item-dash-${i}`} />
           ))}
@@ -72,6 +79,11 @@ export const MobileDashboardNavigation = () => {
           <Divider width="90%" pr={4} opacity={0} />
           <DashboardLinkItem {...SETTINGS_ROUTE} isCollapsed={false} />
           <DashboardLinkItem {...PROFILE_ROUTE} isCollapsed={false} />
+          <DashboardLinkItem
+            pageName="Log out"
+            relativePath="/api/auth/login"
+            isCollapsed={false}
+          />
         </VStack>
       </VStack>
     </Box>

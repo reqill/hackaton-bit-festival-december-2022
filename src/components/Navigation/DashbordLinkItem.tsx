@@ -8,6 +8,8 @@ import {
   QueueListIcon,
   Cog6ToothIcon,
   UserCircleIcon,
+  RectangleGroupIcon,
+  ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import { DEFAULT_TRANSITION } from 'src/constants';
 
@@ -35,6 +37,10 @@ export const DashboardLinkItem = ({
         return <UserCircleIcon />;
       case 'Settings':
         return <Cog6ToothIcon />;
+      case 'Dashboard':
+        return <RectangleGroupIcon />;
+      case 'Log out':
+        return <ArrowLeftOnRectangleIcon />;
       default:
         null;
     }
@@ -67,6 +73,7 @@ export const DashboardLinkItem = ({
             pl={1.5}
             opacity={isCollapsed ? 0 : 1}
             transition={DEFAULT_TRANSITION}
+            whiteSpace="nowrap"
           >
             {pageName}
           </Text>

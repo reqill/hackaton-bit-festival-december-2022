@@ -18,9 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
       <ChakraProvider theme={theme}>
-        <Box overflowX="hidden" maxW="100vw" backgroundColor="gray.50" minH="100vh">
+        <Box overflowX="hidden" maxW="100vw" w="100vw" backgroundColor="gray.50" minH="100vh">
           {isDashboard ? (
-            <HStack>
+            <HStack w="100%">
               <Show above="md">
                 <DashboardNavigation />
               </Show>
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
             </HStack>
           ) : (
-            <VStack>
+            <VStack w="100%">
               <MainNavigation />
               <Component {...pageProps} />
               <Footer />
