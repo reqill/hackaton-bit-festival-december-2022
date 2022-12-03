@@ -22,6 +22,7 @@ model Task {
   planned    Boolean
   startDate  String?
   endDate    String?
+  suspectedDuration Int?
   importance Importance
   users      User[]
   group      Group?     @relation(fields: [groupId], references: [id])
