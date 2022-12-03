@@ -1,4 +1,8 @@
-html,
+html {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -13,3 +17,41 @@ a {
   box-sizing: border-box;
 }
 
+.Kalend__HeaderCalendarTitle,
+.Kalend__HeaderCalendarTitle-mobile,
+.Kalend__CalendarHeaderDates__text,
+.Kalend__CalendarBodyHours__text,
+.Kalend__CalendarHeaderWeekDays__text,
+.Kalend__main,
+.Kalend__text,
+.Kalend__Event__summary,
+.Kalend__Event__summary__type-normal,
+.Kalend__text-light {
+  font-family: 'Karla', sans-serif !important;
+}
+
+.Kalend__ButtonIcon {
+  transition: all 225ms ease-in-out;
+  border-radius: 7px !important;
+}
+
+.Kalend__ButtonIcon__container {
+  padding: 6px;
+}
+
+.Kalend__ButtonBase-border,
+.Kalend__ButtonBase-border {
+  border-radius: 7px !important;
+  padding: 6px 12px !important;
+}
+.Kalend__header_calendar_button-text-selected,
+.Kalend__header_calendar_button-text-selected-dark {
+  color: '#4FD1C5' !important;
+}
+
+.Kalend__button,
+.Kalend__header_calendar_button-mobile,
+.Kalend__ButtonBase {
+  border-radius: 7px !important;
+  padding: 6px 12px !important;
+}

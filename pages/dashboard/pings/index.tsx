@@ -1,18 +1,32 @@
-import { Center, Heading } from '@chakra-ui/react';
+import { Center, Heading, Text, VStack } from '@chakra-ui/react';
 import Head from 'next/head';
 
-export default function Home() {
+export default function Pings() {
   return (
-    <div>
+    <div style={{ width: '100%', height: '100vh' }}>
       <Head>
-        <title>Planning tool</title>
+        <title>Plaatrr | Pings</title>
       </Head>
       <main>
-        <Center height="100vh" maxH="100vh" width="100vw" maxW="100vw" backgroundColor="gray.100">
-          <Heading fontSize="8xl" fontWeight="semibold">
-            Pings
+        <VStack
+          h="100vh"
+          w="100%"
+          alignItems="left"
+          px={5}
+          py={5}
+          justifyContent="flex-start"
+          position="relative"
+        >
+          <Heading fontWeight="semibold" fontSize={['3xl', '4xl', '5xl']} lineHeight="1" pt={3}>
+            🚨 Pings
           </Heading>
-        </Center>
+          <Text fontSize={['lg', 'lg', 'xl']} pl="4.55rem">
+            Communicate in real time
+          </Text>
+          <Center height="75%" color="blackAlpha.400">
+            <Text fontSize={['lg', 'lg', 'xl']}>Kinda empty, isn&apos;t it?</Text>
+          </Center>
+        </VStack>
       </main>
     </div>
   );
