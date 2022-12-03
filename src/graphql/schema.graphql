@@ -22,6 +22,7 @@ type Mutation {
   addGroupEvent(endDate: String!, groupId: String!, importance: importanceInput!, name: String!, startDate: String!): Task!
   addGroupTask(groupId: String!, importance: importanceInput!, name: String!, suspectedDuration: Int): Task!
   addTask(importance: importanceInput!, name: String!, suspectedDuration: Int): Task!
+
   addToGroup(email: String!, groupId: String!): Group!
   createGroup(name: String!): Group!
   findFit(calculationInterval: Int, endDate: String!, maxEndTime: Int, minStartTime: Int, startDate: String!, taskId: String!): Task!
