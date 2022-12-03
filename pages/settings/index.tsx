@@ -8,11 +8,9 @@ export default function Home() {
         <title>Planning tool</title>
       </Head>
       <main>
-        <Center height="100vh" maxH="100vh" width="100vw" maxW="100vw" backgroundColor="gray.100">
-          <Heading fontSize="8xl" fontWeight="semibold">
-            Settings
-          </Heading>
-        </Center>
+        <Heading fontSize="8xl" fontWeight="semibold">
+          Settings
+        </Heading>
       </main>
     </div>
   );
