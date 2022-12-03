@@ -34,7 +34,7 @@ const GET_TASKS = gql`
   }
 `;
 
-export default function Home() {
+export default function CalendarPage() {
   //data.me.tasks taski indywidualne
   //data.me.groups grupy w ktorych jest user group.task - taski danej grupy
   const { data, loading, error } = useQuery(GET_TASKS); //task.planned - na godziny
@@ -76,7 +76,7 @@ export default function Home() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Head>
-        <title>Planning tool</title>
+        <title>Plaatrr | Calendar</title>
       </Head>
       <main>
         <VStack
@@ -88,10 +88,10 @@ export default function Home() {
           justifyContent="flex-start"
           position="relative"
         >
-          <Heading fontWeight="semibold" fontSize="5xl" lineHeight="1" pt={3}>
+          <Heading fontWeight="semibold" fontSize={['3xl', '4xl', '5xl']} lineHeight="1" pt={3}>
             📅 Calendar
           </Heading>
-          <Text fontSize="xl" pl="5rem">
+          <Text fontSize={['lg', 'lg', 'xl']} pl="4.8rem">
             Schedule your life like a pro
           </Text>
 

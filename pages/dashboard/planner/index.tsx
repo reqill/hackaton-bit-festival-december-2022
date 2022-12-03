@@ -37,7 +37,16 @@ const GET_TASKS = gql`
   }
 `;
 
-export default function Home() {
+const SEND_TASK = gql`
+  mutation Mutation($name: String!, $importance: importanceInput!) {
+    addTask(name: $name, importance: $importance) {
+      id
+      importance
+      name
+    }
+  }
+`;
+export default function Planner() {
   const [isDialogOpen, setIsDialogOpen] = useBoolean(false);
   //data.me.tasks taski indywidualne
   //data.me.groups grupy w ktorych jest user group.task - taski danej grupy
@@ -60,7 +69,7 @@ export default function Home() {
     <>
       <div style={{ width: '100%', height: '100%' }}>
         <Head>
-          <title>Planning tool</title>
+          <title>Plaatrr | Planning</title>
         </Head>
         <main>
           <VStack
@@ -72,10 +81,10 @@ export default function Home() {
             justifyContent="flex-start"
             position="relative"
           >
-            <Heading fontWeight="semibold" fontSize="5xl" lineHeight="1" pt={3}>
+            <Heading fontWeight="semibold" fontSize={['3xl', '4xl', '5xl']} lineHeight="1" pt={3}>
               📝 Planning tool
             </Heading>
-            <Text fontSize="xl" pl="4.8rem">
+            <Text fontSize={['lg', 'lg', 'xl']} pl="4.8rem">
               Your todo list for even the hardest of tasks.
             </Text>
             <SimpleGrid pt={4} columns={[1, 1, 2, 2, 3]} gap={3}>

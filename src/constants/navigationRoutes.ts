@@ -15,8 +15,8 @@ export const NAV_ROUTES: NavigationRoutes = [
         description: 'Deserunt adipisicing eu cillum commodo qui anim cillum.',
       },
       {
-        pageName: 'Board',
-        relativePath: '/dashboard/board',
+        pageName: 'Planner',
+        relativePath: '/dashboard/planner',
         description: 'Mollit veniam deserunt deserunt qui qui anim sint minim.',
       },
       {
@@ -31,17 +31,17 @@ export const NAV_ROUTES: NavigationRoutes = [
       },
     ],
   },
-  {
-    pageName: 'FAQ',
-    relativePath: '/faq',
-  },
+  // {
+  //   pageName: 'FAQ',
+  //   relativePath: '/faq',
+  // },
   {
     pageName: 'Settings',
-    relativePath: '/settings',
+    relativePath: '/dashboard/settings',
   },
   {
     pageName: 'Profile',
-    relativePath: '/profile',
+    relativePath: '/dashboard/profile',
   },
 ];
 

@@ -9,14 +9,18 @@ export default function Home() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Head>
-        <title>Planning tool</title>
+        <title>Plaatrr | Dashboard</title>
       </Head>
       <main>
         <VStack maxH="100vh" w="100%" alignItems="left" px={5} py={7} justifyContent="flex-start">
-          <Heading fontWeight="semibold" fontSize="5xl" lineHeight="1">
+          <Heading fontWeight="semibold" fontSize={['3xl', '4xl', '5xl']} lineHeight={1.2}>
             👋 Welcome back, {user?.name || 'mate'}
           </Heading>
-          <Text fontSize="xl" pl="4.8rem">
+          <Text
+            fontSize={['lg', 'lg', 'xl']}
+            pl={['0.1rem', '0.1rem', '2rem', '4.8rem']}
+            lineHeight={1}
+          >
             Check out your summary
           </Text>
           <SimpleGrid

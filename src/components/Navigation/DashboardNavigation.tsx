@@ -12,8 +12,7 @@ import Link from 'next/link';
 
 export const DashboardNavigation = () => {
   const [collapsed, setCollapsed] = useBoolean(false);
-
-  const WIDTH = collapsed ? 75 : 240;
+  const WIDTH = collapsed ? 75 : 220;
 
   return (
     <Box height="100vh" position="relative" width={WIDTH} transition={DEFAULT_TRANSITION}>
@@ -52,13 +51,29 @@ export const DashboardNavigation = () => {
                 mb={3}
                 whiteSpace="nowrap"
                 opacity={collapsed ? 0 : 1}
+                ml={collapsed ? -1 : 0}
                 transition={DEFAULT_TRANSITION}
               >
-                AppName
+                Plaatrr
+              </Heading>
+              <Heading
+                fontWeight="semibold"
+                color="whiteAlpha.900"
+                mt={5}
+                px={3}
+                mb={3}
+                whiteSpace="nowrap"
+                opacity={collapsed ? 1 : 0}
+                transition={DEFAULT_TRANSITION}
+                position="absolute"
+                left={collapsed ? -1 : 0}
+                top={0}
+              >
+                P
               </Heading>
             </Link>
           </LinkBox>
-          <Divider width={collapsed ? '65%' : '90%'} pr={4} opacity={0.2} />
+          <Divider width={collapsed ? '65%' : '91%'} pr={4} opacity={0.2} />
           <Divider width="90%" pr={4} opacity={0} />
           <Divider width="90%" pr={4} opacity={0} />
           <DashboardLinkItem {...DASHBOARD_ROUTE} isCollapsed={collapsed} />
@@ -68,13 +83,13 @@ export const DashboardNavigation = () => {
         </VStack>
 
         <VStack spacing={1} alignItems="left" pb={3}>
-          <Divider width={collapsed ? '65%' : '90%'} pr={4} opacity={0.2} />
+          <Divider width={collapsed ? '65%' : '91%'} pr={4} opacity={0.2} />
           <Divider width="90%" pr={4} opacity={0} />
           <DashboardLinkItem {...SETTINGS_ROUTE} isCollapsed={collapsed} />
           <DashboardLinkItem {...PROFILE_ROUTE} isCollapsed={collapsed} />
           <DashboardLinkItem
             pageName="Log out"
-            relativePath="/api/auth/login"
+            relativePath="/api/auth/logout"
             isCollapsed={collapsed}
           />
         </VStack>
