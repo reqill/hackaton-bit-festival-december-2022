@@ -1,7 +1,6 @@
 import '../src/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Box, ChakraProvider, HStack, Show, VStack } from '@chakra-ui/react';
-
 import theme from '../src/theme';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import {
@@ -13,6 +12,7 @@ import { Footer } from 'src/components/Footer';
 import { useRouter } from 'next/router';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from 'src/lib/apollo';
+import 'kalend/dist/styles/index.css'; // import styles
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

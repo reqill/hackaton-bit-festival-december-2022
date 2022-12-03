@@ -21,6 +21,7 @@ type GroupFormProps = {
   onClose: () => void;
   defName?: string;
 };
+
 export const GroupForm = ({ open, onClose, defName }: GroupFormProps) => {
   const [addedUsers, setAddedUsers] = useState<string[]>([]);
 
