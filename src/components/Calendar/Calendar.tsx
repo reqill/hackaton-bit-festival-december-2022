@@ -12,9 +12,12 @@ export const Calendar = (props: any) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
-    setEvents([]);
-  }, []);
-
+    if (props.events) {
+      console.log('Events');
+      console.log(props.events);
+      setEvents(props.events);
+    }
+  }, [props]);
   const onNewEventClick = (data: any) => {
     // const msg = `New event click action\n\n Callback data:\n\n${JSON.stringify({
     //   hour: data.hour,

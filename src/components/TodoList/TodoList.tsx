@@ -22,9 +22,16 @@ const test = [
   { title: 'title15' },
 ];
 
-export const TodoList = ({ title, createNew }: { title: string; createNew: () => void }) => {
+export const TodoList = ({
+  data,
+  title,
+  createNew,
+}: {
+  data: any;
+  title: string;
+  createNew: () => void;
+}) => {
   const [isCollapsed, setIsCollapsed] = useBoolean(false);
-
   return (
     <Box
       backgroundColor="gray.100"
@@ -66,8 +73,8 @@ export const TodoList = ({ title, createNew }: { title: string; createNew: () =>
             }
           </HStack>
 
-          {test.map((item, i) => (
-            <TodoItem key={`todo-item-${i}`} {...item} />
+          {data?.map((task: any) => (
+            <TodoItem key={`todo-item-${task.id}`} title={task.name} />
           ))}
           <TodoItemAdd addNew={createNew} />
         </VStack>

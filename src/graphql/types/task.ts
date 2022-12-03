@@ -14,7 +14,10 @@ const Importance = enumType({
   name: 'Importance',
   members: ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'],
 });
-
+const TaskType = enumType({
+  name: 'Type',
+  members: ['SCHOOL', 'WORK', 'FRIENDS', 'FAMILY'],
+});
 export const Task = objectType({
   name: 'Task',
   definition(t) {
@@ -25,6 +28,7 @@ export const Task = objectType({
     t.nullable.string('endDate');
     t.nullable.int('suspectedDuration');
     t.field('importance', { type: Importance });
+    t.field('taskType', { type: TaskType });
     t.list.field('users', {
       type: User,
       async resolve(_parent, _args, ctx) {
@@ -57,6 +61,12 @@ export const ImportanceInput = inputObjectType({
     t.nonNull.field('importance', { type: Importance });
   },
 });
+export const TypeInput = inputObjectType({
+  name: 'typeInput',
+  definition(t) {
+    t.nonNull.field('taskType', { type: TaskType });
+  },
+});
 export const EventMutation = extendType({
   type: 'Mutation',
   definition(t) {
@@ -65,6 +75,7 @@ export const EventMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         importance: nonNull(ImportanceInput),
+        type: nonNull(TypeInput),
         startDate: nonNull(stringArg()),
         endDate: nonNull(stringArg()),
       },
@@ -74,6 +85,7 @@ export const EventMutation = extendType({
             name: args.name,
             planned: true,
             importance: args.importance.importance,
+            taskType: args.taskType.taskType,
             startDate: args.startDate,
             endDate: args.endDate,
             users: { connect: { id: ctx?.user?.id } },
@@ -91,6 +103,7 @@ export const TaskMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         importance: nonNull(ImportanceInput),
+        taskType: nonNull(TypeInput),
         suspectedDuration: intArg(),
       },
       resolve(_root, args, ctx) {
@@ -98,6 +111,7 @@ export const TaskMutation = extendType({
           data: {
             name: args.name,
             planned: false,
+            taskType: args.taskType.taskType,
             importance: args.importance.importance,
             suspectedDuration: args.suspectedDuration,
             users: { connect: { id: ctx?.user?.id } },
@@ -116,6 +130,7 @@ export const GroupEventMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         importance: nonNull(ImportanceInput),
+        taskType: nonNull(TypeInput),
         startDate: nonNull(stringArg()),
         endDate: nonNull(stringArg()),
         groupId: nonNull(stringArg()),
@@ -126,6 +141,7 @@ export const GroupEventMutation = extendType({
             name: args.name,
             planned: true,
             importance: args.importance.importance,
+            tytaskTypepe: args.taskType.taskType,
             startDate: args.startDate,
             endDate: args.endDate,
             group: { connect: { id: args.groupId } },
@@ -143,6 +159,7 @@ export const GroupTaskMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         importance: nonNull(ImportanceInput),
+        taskType: nonNull(TypeInput),
         groupId: nonNull(stringArg()),
         suspectedDuration: intArg(),
       },
@@ -152,6 +169,7 @@ export const GroupTaskMutation = extendType({
             name: args.name,
             planned: false,
             importance: args.importance.importance,
+            taskType: args.taskType.taskType,
             suspectedDuration: args.suspectedDuration,
             group: { connect: { id: args.groupId } },
           },

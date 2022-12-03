@@ -13,6 +13,7 @@ export const permissions = shield(
       addGroupTask: isGroupAdmin,
       addGroupEvent: isGroupAdmin,
       addToGroup: isGroupAdmin,
+      findGroupFit: isGroupAdmin,
     },
   },
   {
