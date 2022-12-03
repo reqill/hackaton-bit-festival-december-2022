@@ -3,7 +3,7 @@ import { DesktopNavigation } from './DesktopNavigation';
 import { MobileNavigation } from './MobileNavigation';
 import { NavLogo } from './NavLogo';
 
-export const Navigation = () => {
+export const MainNavigation = () => {
   return (
     <HStack w="100%" justifyContent="space-between" pl={[3, 5]} py={[1, 2]} pr={[1.5, 3]}>
       <NavLogo />
