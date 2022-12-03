@@ -1,4 +1,4 @@
-import { Box, Heading, LinkBox, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, LinkBox, Skeleton, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -22,9 +22,11 @@ export const DashboardCard: FC<DashboardCardProps> = ({ children, path, title, d
               {description}
             </Text>
           </Link>
-          <Box h="100%" w="100%" backgroundColor="green.200" borderRadius={15}>
-            {children}
-          </Box>
+          <Skeleton borderRadius={15} speed={1.5} h="100%" w="100%">
+            <Box h="100%" w="100%" backgroundColor="green.200" borderRadius={15}>
+              {children}
+            </Box>
+          </Skeleton>
         </LinkBox>
       </VStack>
     </Box>

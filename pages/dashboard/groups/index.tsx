@@ -146,7 +146,7 @@ const test: any = [
   },
 ];
 
-export default function Home() {
+export default function Groups() {
   const [isFormOpened, setIsFormOpened] = React.useState(false);
   const [actualGroup, setActualGroup] = React.useState('');
   const { data, loading, error } = useQuery(GET_GROUPS);
@@ -168,7 +168,7 @@ export default function Home() {
     <>
       <div style={{ width: '100%', height: '100vh' }}>
         <Head>
-          <title>Planning tool</title>
+          <title>Plaatrr | Groups</title>
         </Head>
         <main>
           <VStack
@@ -180,10 +180,10 @@ export default function Home() {
             justifyContent="flex-start"
             position="relative"
           >
-            <Heading fontWeight="semibold" fontSize="5xl" lineHeight="1" pt={3}>
+            <Heading fontWeight="semibold" fontSize={['3xl', '4xl', '5xl']} lineHeight="1" pt={3}>
               👪 Groups
             </Heading>
-            <Text fontSize="xl" pl="5rem">
+            <Text fontSize={['lg', 'lg', 'xl']} pl={['1rem', '3.8rem', '5rem']}>
               Connect with your friends and collegues
             </Text>
             <SimpleGrid pt={5} columns={[1, 1, 2, 3, 4]} gap={3} width="100%">

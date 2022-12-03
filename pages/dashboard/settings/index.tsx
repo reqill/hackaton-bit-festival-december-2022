@@ -1,11 +1,11 @@
 import { Center, Heading, Text, VStack } from '@chakra-ui/react';
 import Head from 'next/head';
 
-export default function Pings() {
+export default function Settings() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Head>
-        <title>Plaatrr | Pings</title>
+        <title>Plaatrr | Settings</title>
       </Head>
       <main>
         <VStack
@@ -18,10 +18,10 @@ export default function Pings() {
           position="relative"
         >
           <Heading fontWeight="semibold" fontSize={['3xl', '4xl', '5xl']} lineHeight="1" pt={3}>
-            🚨 Pings
+            ⚙️ Settings
           </Heading>
-          <Text fontSize={['lg', 'lg', 'xl']} pl="4.55rem">
-            Communicate in real time
+          <Text fontSize={['lg', 'lg', 'xl']} pl="5rem">
+            Customize however you want
           </Text>
           <Center height="75%" color="blackAlpha.400">
             <Text fontSize={['lg', 'lg', 'xl']}>Kinda empty, isn&apos;t it?</Text>
