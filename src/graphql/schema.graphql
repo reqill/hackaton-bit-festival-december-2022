@@ -3,8 +3,10 @@
 
 
 type Group {
+  admin: User
   id: String!
   name: String
+  tasks: [Task]
   users: [User]
 }
 
@@ -15,12 +17,22 @@ enum Importance {
   MEDIUM
 }
 
+type Mutation {
+  addEvent(endDate: String!, importance: importanceInput!, name: String!, startDate: String!): Task!
+  addGroupEvent(endDate: String!, groupId: String!, importance: importanceInput!, name: String!, startDate: String!): Task!
+  addGroupTask(groupId: String!, importance: importanceInput!, name: String!): Task!
+  addTask(importance: importanceInput!, name: String!): Task!
+  addToGroup(email: String!, groupId: String!): Group!
+  createGroup(name: String!): Group!
+}
+
 type Query {
-  ok: Boolean!
+  me: User
 }
 
 type Task {
   endDate: String
+  group: Group
   id: String!
   importance: Importance
   name: String
@@ -30,9 +42,14 @@ type Task {
 }
 
 type User {
+  adminOf: [Group]
   email: String
   groups: [Group]
   id: String!
   name: String
   tasks: [Task]
+}
+
+input importanceInput {
+  importance: Importance!
 }

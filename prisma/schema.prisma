@@ -12,6 +12,7 @@ model User {
   username String  @unique
   email    String  @unique
   tasks    Task[]
+  adminOf  Group[] @relation(name: "AdminRelation")
   groups   Group[]
 }
 
@@ -19,16 +20,21 @@ model Task {
   id         String     @id @default(uuid())
   name       String
   planned    Boolean
-  startDate  String
-  endDate    String
+  startDate  String?
+  endDate    String?
   importance Importance
   users      User[]
+  group      Group?     @relation(fields: [groupId], references: [id])
+  groupId    String?
 }
 
 model Group {
-  id    String @id @default(uuid())
-  name  String
-  users User[]
+  id      String @id @default(uuid())
+  name    String
+  admin   User?   @relation(name: "AdminRelation", fields: [adminId], references: [id])
+  adminId String?
+  users   User[]
+  tasks   Task[]
 }
 
 enum Importance {

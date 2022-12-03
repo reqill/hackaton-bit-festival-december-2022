@@ -11,7 +11,6 @@ export default function Home() {
         <Center height="100vh" maxH="100vh" width="100vw" maxW="100vw" backgroundColor="gray.100">
           <Heading fontSize="8xl" fontWeight="semibold">
             Landing Page
-            <a href="/api/auth/login">Logout</a>
           </Heading>
         </Center>
       </main>
