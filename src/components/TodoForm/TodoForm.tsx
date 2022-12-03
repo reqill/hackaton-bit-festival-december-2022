@@ -1,7 +1,7 @@
 import { useFormik, Field, FormikProvider } from 'formik';
 import { object, string } from 'yup';
 import { Dialog } from '../Dialog';
-import { Importance, TaskType } from '@prisma/client';
+import { Importance } from '@prisma/client';
 import { mixed } from 'yup';
 import { Checkbox, FormControl, FormLabel, Input, useToast, VStack } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
@@ -11,7 +11,12 @@ import { useMutation } from '@apollo/client';
 import { FrontTaskType } from '../TodoList';
 import { number } from 'yup';
 import { useState } from 'react';
-
+const TaskType = {
+  SCHOOL: 'SCHOOL',
+  WORK: 'WORK',
+  FRIENDS: 'FRIENDS',
+  FAMILY: 'FAMILY',
+};
 type TodoFormProps = {
   refetch: () => void;
   onClose: () => void;
