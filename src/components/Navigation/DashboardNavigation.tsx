@@ -1,5 +1,11 @@
 import { Box, Circle, Divider, Heading, Icon, LinkBox, useBoolean, VStack } from '@chakra-ui/react';
-import { DASHBOARD_ROUTES, DEFAULT_TRANSITION, PROFILE_ROUTE, SETTINGS_ROUTE } from 'src/constants';
+import {
+  DASHBOARD_ROUTE,
+  DASHBOARD_ROUTES,
+  DEFAULT_TRANSITION,
+  PROFILE_ROUTE,
+  SETTINGS_ROUTE,
+} from 'src/constants';
 import { DashboardLinkItem } from './DashbordLinkItem';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -55,6 +61,7 @@ export const DashboardNavigation = () => {
           <Divider width={collapsed ? '65%' : '90%'} pr={4} opacity={0.2} />
           <Divider width="90%" pr={4} opacity={0} />
           <Divider width="90%" pr={4} opacity={0} />
+          <DashboardLinkItem {...DASHBOARD_ROUTE} isCollapsed={collapsed} />
           {DASHBOARD_ROUTES.map((route, i) => (
             <DashboardLinkItem {...route} isCollapsed={collapsed} key={`key-dash-2-${i}`} />
           ))}
@@ -65,6 +72,11 @@ export const DashboardNavigation = () => {
           <Divider width="90%" pr={4} opacity={0} />
           <DashboardLinkItem {...SETTINGS_ROUTE} isCollapsed={collapsed} />
           <DashboardLinkItem {...PROFILE_ROUTE} isCollapsed={collapsed} />
+          <DashboardLinkItem
+            pageName="Log out"
+            relativePath="/api/auth/login"
+            isCollapsed={collapsed}
+          />
         </VStack>
       </VStack>
     </Box>
