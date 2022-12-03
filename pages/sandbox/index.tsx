@@ -6,11 +6,12 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 
 export default function Home() {
   const SEND_TASK = gql`
-    mutation Mutation($name: String!, $importance: importanceInput!) {
-      addTask(name: $name, importance: $importance) {
+    mutation Mutation($name: String!, $importance: importanceInput!, $suspectedDuration: Int) {
+      addTask(name: $name, importance: $importance, suspectedDuration: $suspectedDuration) {
         id
         importance
         name
+        suspectedDuration
       }
     }
   `;
@@ -107,6 +108,59 @@ export default function Home() {
       }
     }
   `;
+  const FIT_TASK = gql`
+    mutation AddGroupTask(
+      $taskId: String!
+      $startDate: String!
+      $endDate: String!
+      $minStartTime: Int
+      $maxEndTime: Int
+    ) {
+      findFit(
+        taskId: $taskId
+        startDate: $startDate
+        endDate: $endDate
+        minStartTime: $minStartTime
+        maxEndTime: $maxEndTime
+      ) {
+        endDate
+        id
+        importance
+        name
+        planned
+        startDate
+        suspectedDuration
+      }
+    }
+  `;
+
+  const GROUP_FIT_TASK = gql`
+    mutation Mutation(
+      $taskId: String!
+      $startDate: String!
+      $endDate: String!
+      $groupId: String!
+      $minStartTime: Int
+      $maxEndTime: Int
+    ) {
+      findGroupFit(
+        taskId: $taskId
+        startDate: $startDate
+        endDate: $endDate
+        groupId: $groupId
+        minStartTime: $minStartTime
+        maxEndTime: $maxEndTime
+      ) {
+        endDate
+        id
+        importance
+        name
+        planned
+        startDate
+        suspectedDuration
+      }
+    }
+  `;
 
   const { user, error, isLoading } = useUser();
   const [name, setName] = useState('');
@@ -120,6 +174,8 @@ export default function Home() {
   const [email, setEmail] = useState('');
 
   const [selectedGroup, setSelectedGroup] = useState('');
+
+  const [suspectedDuration, setSuspectedDuration] = useState(0);
 
   const [taskMut, { data: dataT, loading: loadingT, error: errorMutation }] =
     useMutation(SEND_TASK);
@@ -136,6 +192,10 @@ export default function Home() {
 
   const [addToGroupMutation] = useMutation(ADD_TO_GROUP);
 
+  const [fitTaskMutation] = useMutation(FIT_TASK);
+
+  const [fitGroupTaskMutation] = useMutation(GROUP_FIT_TASK);
+
   const { data, loading, error: errorQ } = useQuery(GET_TASKS);
 
   if (errorMutation) return <p>{errorMutation.message}</p>;
@@ -151,7 +211,7 @@ export default function Home() {
       });
     } else {
       taskMut({
-        variables: { name, importance: { importance: 'HIGH' } },
+        variables: { name, importance: { importance: 'HIGH' }, suspectedDuration },
       });
     }
   };
@@ -171,6 +231,30 @@ export default function Home() {
         variables: { name, importance: { importance: 'HIGH' }, groupId: selectedGroup },
       });
     }
+  };
+
+  const fitTask = () => {
+    // const taskId = data.me.tasks.filter((t: any) => !t.planned)[0].id;
+    // fitTaskMutation({
+    //   variables: {
+    //     taskId: taskId,
+    //     startDate: '2022/12/2 23:00',
+    //     endDate: '2022/12/5 23:00',
+    //     minStartTime: 60 * 8,
+    //     maxEndTime: 60 * 22,
+    //   },
+    // });
+
+    fitGroupTaskMutation({
+      variables: {
+        taskId: '709ca857-8e32-4e9c-8ed3-5270e439dadf',
+        groupId: '475f3371-f07f-4ba6-aacd-8c7cf7f6117b',
+        startDate: '2022/12/2 23:00',
+        endDate: '2022/12/5 23:00',
+        minStartTime: 60 * 8,
+        maxEndTime: 60 * 22,
+      },
+    });
   };
   return (
     <div>
@@ -196,6 +280,13 @@ export default function Home() {
         />
         <input
           type="text"
+          name="suspectedDuration"
+          onChange={(e) => setSuspectedDuration(Number.parseInt(e.target.value))}
+          value={suspectedDuration}
+          placeholder="suspectedDuration"
+        />
+        <input
+          type="text"
           name="endDate"
           onChange={(e) => setEndDate(e.target.value)}
           value={endDate}
@@ -211,6 +302,16 @@ export default function Home() {
               Importance: {t.importance}
             </div>
           );
+        })}
+        {data?.me.groups.map((group: any) => {
+          return group.tasks.map((t: any) => {
+            return (
+              <div key={t.id}>
+                Name: {t.name} StartDate: {t.startDate} EndDate: {t.endDate} Planned: {t.planned}
+                Importance: {t.importance}
+              </div>
+            );
+          });
         })}
         <input
           type="text"
@@ -249,6 +350,13 @@ export default function Home() {
           }}
         >
           add
+        </button>
+        <button
+          onClick={() => {
+            fitTask();
+          }}
+        >
+          FitTask
         </button>
       </main>
     </div>
