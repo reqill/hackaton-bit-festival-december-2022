@@ -15,6 +15,7 @@
     "start": "next start",
     "build": "next build",
     "export": "next export",
+    "pre-check": "npm i && npm run format && npm run check-types && npm run lint && npm run build",
     "test": "jest --config ./jest.config.ts"
   },
   "dependencies": {
