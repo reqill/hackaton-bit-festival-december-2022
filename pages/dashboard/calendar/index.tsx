@@ -1,5 +1,5 @@
 import { Heading, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Calendar } from 'src/components/Calendar';
