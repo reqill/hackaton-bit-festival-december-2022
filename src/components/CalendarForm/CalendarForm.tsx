@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormLabel, HStack, Input } from '@chakra-ui/react';
+import { Checkbox, FormControl, FormLabel, Input, useToast } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import { Dialog } from '../Dialog';
 
@@ -9,21 +9,31 @@ type CalendarFormProps = {
 };
 
 export const CalendarForm = ({ open, onClose, event }: CalendarFormProps) => {
+  const toast = useToast();
+
   const formik = useFormik({
     initialValues: {
-      hour: event?.hour || '',
-      day: event?.day || '',
-      duration: 0,
       wholeDay: false,
-      startAt: event?.startAt || '',
+      startAt: event?.day || '',
       endAt: event?.endAt || '',
     },
+
     onSubmit: async (values) => {
-      // cal api or sth
-      console.log(values);
-      formik.resetForm();
+      try {
+        console.log(values);
+        formik.resetForm();
+      } catch (e: any) {
+        toast({
+          position: 'bottom-left',
+          description: e.message,
+          status: 'error',
+          duration: 2500,
+          isClosable: false,
+        });
+      }
     },
   });
+  console.log(formik.values.endAt, formik.values.startAt);
 
   return (
     <Dialog open={open} onClose={onClose} title="Add/inspect event" onSubmit={formik.submitForm}>
@@ -34,7 +44,9 @@ export const CalendarForm = ({ open, onClose, event }: CalendarFormProps) => {
           justifyContent="left"
           alignItems="center"
         >
-          <FormLabel htmlFor="whole">Whole day</FormLabel>
+          <FormLabel htmlFor="whole" userSelect="none">
+            Whole day
+          </FormLabel>
           <Checkbox
             pr={2}
             mt={-2}
@@ -44,47 +56,7 @@ export const CalendarForm = ({ open, onClose, event }: CalendarFormProps) => {
             onChange={(e) => formik.setFieldValue('wholeDay', e.target.checked)}
           />
         </FormControl>
-        <HStack>
-          <FormControl isDisabled={formik.values.wholeDay}>
-            <FormLabel htmlFor="day">Hour</FormLabel>
-            <Input
-              mt={-1}
-              id="hour"
-              name="hour"
-              value={formik.values.hour}
-              type="time"
-              pattern="HH:mm"
-              onChange={(e) => formik.setFieldValue('hour', e.target.value)}
-            />
-          </FormControl>
-          <FormControl isDisabled={formik.values.wholeDay}>
-            <FormLabel htmlFor="duration">
-              Duration <small>(in minutes)</small>
-            </FormLabel>
-            <Input
-              mt={-1}
-              id="duration"
-              name="duration"
-              value={formik.values.duration}
-              type="number"
-              onChange={(e) => formik.setFieldValue('duration', e.target.value)}
-            />
-          </FormControl>
-        </HStack>
-        <FormControl pt={2} isDisabled={formik.values.wholeDay}>
-          <FormLabel htmlFor="day">Day</FormLabel>
-          <Input
-            mt={-1}
-            id="day"
-            name="date"
-            value={formik.values.day}
-            type="date"
-            pattern="yyyy-MM-dd"
-            onChange={(e) => formik.setFieldValue('day', e.target.value)}
-          />
-        </FormControl>
-
-        <FormControl pt={2} isDisabled={!formik.values.wholeDay}>
+        <FormControl pt={2}>
           <FormLabel htmlFor="daystartat">
             Start Date <small>(inclusive)</small>
           </FormLabel>
@@ -93,12 +65,12 @@ export const CalendarForm = ({ open, onClose, event }: CalendarFormProps) => {
             id="startat"
             name="startAt"
             value={formik.values.startAt}
-            type="datetime"
-            pattern="yyyy-MM-dd HH:mm"
+            type={formik.values.wholeDay ? 'date' : 'datetime-local'}
+            pattern={formik.values.wholeDay ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm'}
             onChange={(e) => formik.setFieldValue('startAt', e.target.value)}
           />
         </FormControl>
-        <FormControl pt={2} isDisabled={!formik.values.wholeDay}>
+        <FormControl pt={2}>
           <FormLabel htmlFor="endat">
             End Date <small>(inclusive)</small>
           </FormLabel>
@@ -107,8 +79,8 @@ export const CalendarForm = ({ open, onClose, event }: CalendarFormProps) => {
             id="endAt"
             name="endAt"
             value={formik.values.endAt}
-            type="datetime"
-            pattern="yyyy-MM-dd HH:mm"
+            type={formik.values.wholeDay ? 'date' : 'datetime-local'}
+            pattern={formik.values.wholeDay ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm'}
             onChange={(e) => formik.setFieldValue('endAt', e.target.value)}
           />
         </FormControl>
