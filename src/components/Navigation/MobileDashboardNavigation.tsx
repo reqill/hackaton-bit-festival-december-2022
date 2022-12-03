@@ -20,8 +20,8 @@ export const MobileDashboardNavigation = () => {
       position="relative"
       width={WIDTH}
       transition={DEFAULT_TRANSITION}
-      transform={collapsed ? 'translateX(-210px)' : 'translateX(0)'}
-      mr={collapsed ? '-210px' : '0'}
+      transform={collapsed ? 'translateX(-220px)' : 'translateX(0)'}
+      mr={collapsed ? '-220px' : '0'}
     >
       <Circle
         position="absolute"
@@ -33,7 +33,7 @@ export const MobileDashboardNavigation = () => {
         onClick={setCollapsed.toggle}
       >
         <Icon color="whiteAlpha.800" height={6} width={6} m={0.5} p={0.5}>
-          {collapsed ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          {!collapsed ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </Icon>
       </Circle>
       <VStack
@@ -53,6 +53,7 @@ export const MobileDashboardNavigation = () => {
               <Heading
                 fontWeight="semibold"
                 color="whiteAlpha.900"
+                fontSize={'4xl'}
                 mt={5}
                 px={3}
                 mb={3}
@@ -60,7 +61,7 @@ export const MobileDashboardNavigation = () => {
                 opacity={false ? 0 : 1}
                 transition={DEFAULT_TRANSITION}
               >
-                AppName
+                Plaatrr
               </Heading>
             </Link>
           </LinkBox>

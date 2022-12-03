@@ -24,15 +24,25 @@ const getRandomColor200And300Pair = () => {
   return [`${randomColor}.200`, `${randomColor}.300`];
 };
 
-export const Avatar = ({ name, moreChars = false }: { name: string; moreChars?: boolean }) => {
+export const Avatar = ({
+  name,
+  moreChars = false,
+  size = 8,
+}: {
+  name: string;
+  moreChars?: boolean;
+  size?: number;
+}) => {
   const [bgColor200, bgColor300] = getRandomColor200And300Pair();
   return (
     <Circle
       backgroundColor={moreChars ? 'gray.200' : bgColor200}
-      size={8}
+      size={size}
       _hover={{ zIndex: 99999, backgroundColor: moreChars ? 'gray.300' : bgColor300 }}
     >
-      <Text cursor="default">{getStringForAvatar(name, moreChars)}</Text>
+      <Text cursor="default" fontSize={size + 8}>
+        {getStringForAvatar(name, moreChars)}
+      </Text>
     </Circle>
   );
 };

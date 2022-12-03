@@ -31,7 +31,7 @@ export const DashboardLinkItem = ({
         return <UserGroupIcon />;
       case 'Pings':
         return <BellIcon />;
-      case 'Board':
+      case 'Planner':
         return <QueueListIcon />;
       case 'Profile':
         return <UserCircleIcon />;
@@ -53,7 +53,8 @@ export const DashboardLinkItem = ({
         backgroundColor: 'gray.700',
       }}
       transition={DEFAULT_TRANSITION}
-      width={isCollapsed ? 38 : 195}
+      width={isCollapsed ? 38 : 180}
+      height={'2.4rem'}
     >
       <Link href={relativePath}>
         <HStack
