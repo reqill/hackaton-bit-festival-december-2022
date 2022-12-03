@@ -35,26 +35,29 @@ export const MobileNavigation = () => {
       <Drawer isOpen={isOpen} onClose={setIsOpen.off}>
         <DrawerOverlay />
         <DrawerContent borderTopLeftRadius={15} borderBottomLeftRadius={15}>
-          <VStack justifyContent="center" alignItems="center" height="100%">
+          <VStack justifyContent="center" alignItems="center" height="100%" spacing={1}>
             {NAV_ROUTES.map((path, i) => (
-              <Box
-                userSelect="none"
-                transition={DEFAULT_TRANSITION}
-                borderRadius={7}
-                _hover={{
-                  backgroundColor: 'gray.100',
-                }}
-                onClick={setIsOpen.toggle}
-                zIndex={999999}
-              >
-                <LinkBox width={200}>
-                  <Link href={path.relativePath}>
-                    <Text fontSize="2xl" textAlign="center" py={2}>
-                      {path.pageName}
-                    </Text>
-                  </Link>
-                </LinkBox>
-              </Box>
+              <>
+                <Box
+                  userSelect="none"
+                  transition={DEFAULT_TRANSITION}
+                  borderRadius={7}
+                  _hover={{
+                    backgroundColor: 'gray.100',
+                  }}
+                  onClick={setIsOpen.off}
+                  zIndex={999999}
+                  mt={0}
+                >
+                  <LinkBox width={200}>
+                    <Link href={path.relativePath}>
+                      <Text fontSize="2xl" textAlign="center" py={2}>
+                        {path.pageName}
+                      </Text>
+                    </Link>
+                  </LinkBox>
+                </Box>
+              </>
             ))}
           </VStack>
         </DrawerContent>

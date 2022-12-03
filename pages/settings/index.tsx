@@ -1,4 +1,4 @@
-import { Center, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import Head from 'next/head';
 
 export default function Home() {
