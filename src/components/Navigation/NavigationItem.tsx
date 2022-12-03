@@ -87,7 +87,7 @@ export const NavigationItem = ({
               {nestedRoutes?.map((route, i) => (
                 <NavigationSubItem
                   key={`subitem-menu-${i}`}
-                  relativePath={`${relativePath}${route.relativePath}`}
+                  relativePath={`${route.relativePath}`}
                   pageName={route.pageName}
                   description={route.description}
                 />

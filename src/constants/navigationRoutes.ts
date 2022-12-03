@@ -44,3 +44,7 @@ export const NAV_ROUTES: NavigationRoutes = [
     relativePath: '/profile',
   },
 ];
+
+export const DASHBOARD_ROUTES = NAV_ROUTES.find((el) => el.pageName === 'Dashboard')?.nestedRoutes!;
+export const SETTINGS_ROUTE = NAV_ROUTES.find((el) => el.pageName === 'Settings')!;
+export const PROFILE_ROUTE = NAV_ROUTES.find((el) => el.pageName === 'Profile')!;
