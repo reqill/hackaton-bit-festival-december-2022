@@ -1,4 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus';
+import { defaultHandler } from './defaults';
 import { Task } from './task';
 import { User } from './user';
 
@@ -7,42 +8,15 @@ export const Group = objectType({
   definition(t) {
     t.nonNull.string('id');
     t.string('name');
-    t.list.field('users', {
-      type: User,
-      async resolve(_parent, _args, ctx) {
-        return await ctx.prisma.group
-          .findUnique({
-            where: {
-              id: _parent.id as string | undefined,
-            },
-          })
-          .users();
-      },
-    });
-    t.field('admin', {
-      type: User,
-      async resolve(_parent, _args, ctx) {
-        return await ctx.prisma.group
-          .findUnique({
-            where: {
-              id: _parent.id as string | undefined,
-            },
-          })
-          .admin();
-      },
-    });
-    t.list.field('tasks', {
-      type: Task,
-      async resolve(_parent, _args, ctx) {
-        return await ctx.prisma.group
-          .findUnique({
-            where: {
-              id: _parent.id as string | undefined,
-            },
-          })
-          .tasks();
-      },
-    });
+    t.list.field(
+      'users',
+      defaultHandler({ nexusType: User, thisDbType: 'group', fieldName: 'users' })
+    );
+    t.field('admin', defaultHandler({ nexusType: User, thisDbType: 'group', fieldName: 'admin' }));
+    t.list.field(
+      'tasks',
+      defaultHandler({ nexusType: Task, thisDbType: 'group', fieldName: 'tasks' })
+    );
   },
 });
 

@@ -8,6 +8,7 @@ import {
   objectType,
   stringArg,
 } from 'nexus';
+import { defaultHandler, formatDate } from './defaults';
 import { Group } from './group';
 import { User } from './user';
 const Importance = enumType({
@@ -29,30 +30,14 @@ export const Task = objectType({
     t.nullable.int('suspectedDuration');
     t.field('importance', { type: Importance });
     t.field('taskType', { type: TaskType });
-    t.list.field('users', {
-      type: User,
-      async resolve(_parent, _args, ctx) {
-        return await ctx.prisma.task
-          .findUnique({
-            where: {
-              id: _parent.id as string | undefined,
-            },
-          })
-          .users();
-      },
-    });
-    t.nullable.field('group', {
-      type: Group,
-      async resolve(_parent, _args, ctx) {
-        return await ctx.prisma.task
-          .findUnique({
-            where: {
-              id: _parent.id as string | undefined,
-            },
-          })
-          .group();
-      },
-    });
+    t.list.field(
+      'users',
+      defaultHandler({ nexusType: User, thisDbType: 'task', fieldName: 'users' })
+    );
+    t.nullable.field(
+      'group',
+      defaultHandler({ nexusType: Group, thisDbType: 'task', fieldName: 'group' })
+    );
   },
 });
 export const ImportanceInput = inputObjectType({
@@ -178,32 +163,6 @@ export const GroupTaskMutation = extendType({
     });
   },
 });
-
-const formatDate = (date: Date) => {
-  return (
-    date.getFullYear().toString() +
-    '/' +
-    (date.getMonth() + 1).toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    }) +
-    '/' +
-    date.getDate().toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    }) +
-    ' ' +
-    date.getHours().toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    }) +
-    ':' +
-    date.getMinutes().toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    })
-  );
-};
 
 export const FindPersonalFitMutation = extendType({
   type: 'Mutation',
