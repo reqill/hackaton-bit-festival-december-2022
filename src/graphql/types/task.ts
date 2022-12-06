@@ -52,117 +52,65 @@ export const TypeInput = inputObjectType({
     t.nonNull.field('taskType', { type: TaskType });
   },
 });
-export const EventMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.nonNull.field('addEvent', {
-      type: 'Task',
-      args: {
-        name: nonNull(stringArg()),
-        importance: nonNull(ImportanceInput),
-        taskType: nonNull(TypeInput),
-        startDate: nonNull(stringArg()),
-        endDate: nonNull(stringArg()),
-      },
-      resolve(_root, args, ctx) {
-        return ctx.prisma.task.create({
-          data: {
-            name: args.name,
-            planned: true,
-            importance: args.importance.importance,
-            taskType: args.taskType.taskType,
-            startDate: args.startDate,
-            endDate: args.endDate,
-            users: { connect: { id: ctx?.user?.id } },
-          },
-        });
-      },
-    });
-  },
-});
-export const TaskMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.nonNull.field('addTask', {
-      type: 'Task',
-      args: {
-        name: nonNull(stringArg()),
-        importance: nonNull(ImportanceInput),
-        taskType: nonNull(TypeInput),
-        suspectedDuration: intArg(),
-      },
-      resolve(_root, args, ctx) {
-        return ctx.prisma.task.create({
-          data: {
-            name: args.name,
-            planned: false,
-            taskType: args.taskType.taskType,
-            importance: args.importance.importance,
-            suspectedDuration: args.suspectedDuration,
-            users: { connect: { id: ctx?.user?.id } },
-          },
-        });
-      },
-    });
-  },
-});
 
-export const GroupEventMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.nonNull.field('addGroupEvent', {
-      type: 'Task',
-      args: {
-        name: nonNull(stringArg()),
-        importance: nonNull(ImportanceInput),
-        taskType: nonNull(TypeInput),
-        startDate: nonNull(stringArg()),
-        endDate: nonNull(stringArg()),
-        groupId: nonNull(stringArg()),
-      },
-      resolve(_root, args, ctx) {
-        return ctx.prisma.task.create({
-          data: {
+const createTaskMutation = (planned: boolean, group: boolean) => {
+  const basicArgs: any = {
+    name: nonNull(stringArg()),
+    importance: nonNull(ImportanceInput),
+    taskType: nonNull(TypeInput),
+  };
+  var queryName = 'add';
+  if (group) {
+    queryName += 'Group';
+    basicArgs.groupId = nonNull(stringArg());
+  }
+  if (planned) {
+    queryName += 'Event';
+    basicArgs.startDate = nonNull(stringArg());
+    basicArgs.endDate = nonNull(stringArg());
+  } else {
+    queryName += 'Task';
+    basicArgs.suspectedDuration = intArg();
+  }
+
+  return extendType({
+    type: 'Mutation',
+    definition(t) {
+      t.nonNull.field(queryName, {
+        type: 'Task',
+        args: basicArgs,
+        resolve(_root, args, ctx) {
+          const basicData: any = {
             name: args.name,
-            planned: true,
+            planned: planned,
             importance: args.importance.importance,
             taskType: args.taskType.taskType,
-            startDate: args.startDate,
-            endDate: args.endDate,
-            group: { connect: { id: args.groupId } },
-          },
-        });
-      },
-    });
-  },
-});
-export const GroupTaskMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.nonNull.field('addGroupTask', {
-      type: 'Task',
-      args: {
-        name: nonNull(stringArg()),
-        importance: nonNull(ImportanceInput),
-        taskType: nonNull(TypeInput),
-        groupId: nonNull(stringArg()),
-        suspectedDuration: intArg(),
-      },
-      resolve(_root, args, ctx) {
-        return ctx.prisma.task.create({
-          data: {
-            name: args.name,
-            planned: false,
-            importance: args.importance.importance,
-            taskType: args.taskType.taskType,
-            suspectedDuration: args.suspectedDuration,
-            group: { connect: { id: args.groupId } },
-          },
-        });
-      },
-    });
-  },
-});
+            users: { connect: { id: ctx?.user?.id } },
+          };
+          if (planned) {
+            basicData.startDate = args.startDate;
+            basicData.endDate = args.endDate;
+          } else {
+            basicData.suspectedDuration = args.suspectedDuration;
+          }
+          if (group) {
+            basicData.group = { connect: { id: args.groupId } };
+          } else {
+            basicData.users = { connect: { id: ctx?.user?.id } };
+          }
+          return ctx.prisma.task.create({
+            data: basicData,
+          });
+        },
+      });
+    },
+  });
+};
+
+export const EventMutation = createTaskMutation(true, false);
+export const TaskMutation = createTaskMutation(false, false);
+export const GroupEventMutation = createTaskMutation(true, true);
+export const GroupTaskMutation = createTaskMutation(false, true);
 
 export const FindPersonalFitMutation = extendType({
   type: 'Mutation',
